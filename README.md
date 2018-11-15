@@ -1,0 +1,2 @@
+# initialization_for_mac
+macの初期設定時をできるだけ自動化したい
