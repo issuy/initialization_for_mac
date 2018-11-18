@@ -11,13 +11,16 @@ list: ## Show dot files in this repo
 deploy: ## Create symlink to home directory
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(notdir $(val));)
 
+setup: ## Execute brew bundle
+	brew bundle
+
 update: ## Fetch changes for this repo
 	git pull origin master
 	git submodule init
 	git submodule update
 	git submodule foreach git pull origin master
 
-install: update deploy  ## Run make update, deploy, init
+install: update deploy setup ## Run make update, deploy, init
 	@exec $$SHELL
 
 clean: ## Remove the dot files
