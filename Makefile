@@ -20,11 +20,12 @@ clean-dotfiles: ## Remove symlink from home directory
 	@-$(foreach val, $(DOTFILES), rm -vrf $(HOME)/$(notdir $(val));)
 
 setup-brew: Brewfile ## Install packages from Brewfile
-	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	brew bundle
-clean-brew: Brewfile ## Uninstall packages from Brewfile
-	brew bundle cleanup
-	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+	echo /usr/local/bin/fish | sudo tee -a /etc/shells
+	chsh -s /usr/local/bin/fish
+clean-brew: ## Uninstall packages from Brewfile
+	chsh -s /bin/bash
+	-brew remove --force $(shell brew list) --ignore-dependencies
 
 setup-vim: ## Download Vim Plugins
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
