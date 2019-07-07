@@ -19,12 +19,22 @@ setup-dotfiles: ## Create symlink to home directory
 clean-dotfiles: ## Remove symlink from home directory
 	@-$(foreach val, $(DOTFILES), rm -vrf $(HOME)/$(notdir $(val));)
 
-setup-brew: Brewfile ## Install packages from Brewfile
-	brew bundle
+setup-shell: ## Setup shell config installed from brew
 	echo /usr/local/bin/zsh | sudo tee -a /etc/shells
 	chsh -s /usr/local/bin/zsh
-clean-brew: ## Uninstall packages from Brewfile
+	curl -Lo install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+	sh install.sh
+	rm install.sh
+clean-shell: ## Delete shell config installed from brew
 	chsh -s /bin/bash
+	sudo sed -i -e '/^\/usr\/local/d' /etc/shells
+	curl -Lo uninstall.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/uninstall.sh
+	sh uninstall.sh
+	rm uninstall.sh
+
+setup-brew: Brewfile ## Install packages from Brewfile
+	brew bundle
+clean-brew: ## Uninstall packages from Brewfile
 	brew remove --force $(shell brew list) --ignore-dependencies
 
 setup-vim: ## Download Vim Plugins
@@ -34,8 +44,8 @@ clean-vim: ## Download Vim Plugins
 	rm -rf ~/.vim/autoload/plug.vim
 	rm -rf ~/git/tomislave/osx-terminal.app-colors-solarized
 
-setup-all: setup-brew setup-vim setup-dotfiles ## Call all functions setup-***
-clean-all: clean-brew clean-vim clean-dotfiles  ## Call all functions clean-***
+setup-all: setup-brew setup-vim setup-shell setup-dotfiles ## Call all functions setup-***
+clean-all: clean-brew clean-vim clean-shell clean-dotfiles ## Call all functions clean-***
 
 install: update setup-all ## Call update and setup-all
 	@exec $$SHELL
