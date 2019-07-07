@@ -21,11 +21,11 @@ clean-dotfiles: ## Remove symlink from home directory
 
 setup-brew: Brewfile ## Install packages from Brewfile
 	brew bundle
-	echo /usr/local/bin/fish | sudo tee -a /etc/shells
-	chsh -s /usr/local/bin/fish
+	echo /usr/local/bin/zsh | sudo tee -a /etc/shells
+	chsh -s /usr/local/bin/zsh
 clean-brew: ## Uninstall packages from Brewfile
 	chsh -s /bin/bash
-	-brew remove --force $(shell brew list) --ignore-dependencies
+	brew remove --force $(shell brew list) --ignore-dependencies
 
 setup-vim: ## Download Vim Plugins
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
