@@ -16,8 +16,10 @@ update: ## Fetch changes for this repo
 
 setup-dotfiles: ## Create symlink to home directory
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(notdir $(val));)
+	ln -sfnv $(abspath dotfiles/.vimrc) $(HOME)/.ideavimrc
 clean-dotfiles: ## Remove symlink from home directory
 	@-$(foreach val, $(DOTFILES), rm -vrf $(HOME)/$(notdir $(val));)
+	rm -vrf $(HOME)/.ideavimrc
 
 setup-shell: ## Setup shell config installed from brew
 	echo /usr/local/bin/zsh | sudo tee -a /etc/shells
