@@ -9,7 +9,7 @@ macの初期設定時をできるだけ自動化したい
 Xcode Command Line Toolsも入る
 
 ### このリポジトリのクローン
-https/sshでgit clone
+sshでgit clone
 
 ### 初期設定の実行
 ```
